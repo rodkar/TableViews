@@ -11,6 +11,7 @@ import UIKit
 class TableViewController: UITableViewController {
     
     var groups = [String]()
+    var selectedCell : String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,6 +63,28 @@ class TableViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        self.selectedCell = self.groups[indexPath.row]
+        self.performSegueWithIdentifier("showDetails", sender: self)
+    }
+    
+    // Override to support rearranging the table view.
+    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+        
+    }
+    
+    // Override to support conditional rearranging of the table view.
+    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        // Return NO if you do not want the item to be re-orderable.
+        return true
+    }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showDetails" {
+            let detailsViewController = segue.destinationViewController as TableViewDetailsViewController
+            detailsViewController.label = self.selectedCell
+        }
+    }
     
     /*
     // Override to support conditional editing of the table view.
@@ -82,21 +105,6 @@ class TableViewController: UITableViewController {
     }
     }
     */
-    
-    
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-    
-    }
-
-    
-    
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return NO if you do not want the item to be re-orderable.
-    return true
-    }
-
     
     /*
     // MARK: - Navigation
